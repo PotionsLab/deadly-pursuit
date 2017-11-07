@@ -8,8 +8,8 @@ import GameView from './views/game'
 
 class App extends Phaser.Game {
   constructor () {
-    const width = 120;
-    const height = 190;
+    const width = 270;
+    const height = 480;
 
     super(width, height, Phaser.CANVAS, 'game', null)
 
