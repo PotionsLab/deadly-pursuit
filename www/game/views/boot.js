@@ -27,6 +27,11 @@ export default class extends Phaser.State {
     this.load.image('redCar', this.getResourcePath('car_top_red.png'));
     this.load.image('dashboardBg', this.getResourcePath('dashboard_bg.png'));
     this.load.image('fuelBar', this.getResourcePath('fuel_bar.png'));
+
+    this.load.spritesheet('exitBtn', this.getResourcePath('exit_button.png'), 49, 60);
+    this.load.spritesheet('garageBtn', this.getResourcePath('garage_button.png'), 49, 60);
+    this.load.spritesheet('rankBtn', this.getResourcePath('rank_button.png'), 49, 60);
+    this.load.spritesheet('settingsBtn', this.getResourcePath('settings_button.png'), 49, 60);
     
     this.fontsLoaded();
   }
