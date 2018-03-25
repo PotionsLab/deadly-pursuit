@@ -4,7 +4,7 @@
   "description": "Deadly Pursuit Game",
   "main": "index.html",
   "scripts": {
-    "setup": "npm install && cordova platform add android",
+    "setup": "yarn install && cordova platform add android",
     "emulate": "cordova emulate",
 	  "dev": "webpack",
     "deploy": "webpack --config webpack.production.config.js",
