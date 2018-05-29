@@ -30,7 +30,7 @@ node_modules
 www/build
 
 # Assets
-www/assets
+# www/assets
 
 # Platforms
 platforms/android

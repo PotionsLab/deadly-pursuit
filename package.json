@@ -6,7 +6,7 @@
   "scripts": {
     "setup": "yarn install && cordova platform add android",
     "emulate": "cordova emulate",
-	  "dev": "webpack",
+    "dev": "webpack",
     "deploy": "webpack --config webpack.production.config.js",
     "test": "test"
   },
@@ -28,7 +28,8 @@
   },
   "homepage": "https://github.com/PotionsLab/deadly-pursuit/Jettio",
   "dependencies": {
-    "phaser-ce": "2.8.0",
+    "phaser-camera-offset": "^1.0.1",
+    "phaser-ce": "2.10.3",
     "webfontloader": "1.6.27"
   },
   "devDependencies": {

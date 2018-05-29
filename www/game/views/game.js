@@ -1,33 +1,103 @@
 /* globals __DEV__ */
 import Phaser from 'phaser'
 
+  var result;
+
 export default class extends Phaser.State {
   init () {}
-  
-  preload () {
-    this.road = this.add.tileSprite(0, 0, 270, 392, 'road');
-    this.redCar = this.add.sprite(game.world.width - 150, game.world.height - 150, 'redCar');
-    this.dashboardBg = this.add.image(0, game.world.height - 98, 'dashboardBg');
-    this.fuelBar = this.add.image(10, game.world.height - 70, 'fuelBar');
+
+  create() {
+    this.map = this.game.add.tilemap('level1');
+
+    this.map.addTilesetImage('tiles', 'tilemap_turns');
+
+    this.backgroundlayer = this.map.createLayer('backgroundLayer');
+
+    this.backgroundlayer.resizeWorld();
+
+    this.createItems();
+    this.createCars();    
+
+    this.player = this.game.add.sprite(226, 1522, 'redCar');
+    this.game.physics.arcade.enable(this.player);
+
+    let camera = this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.9, 0.9);
+    this.game.camera.targetOffset.y = -100;
+
+    this.cursors = this.game.input.keyboard.createCursorKeys();
   }
 
-  create () {
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+  createItems() {
+    //create items
+    this.items = this.game.add.group();
+    this.items.enableBody = true;
 
-    this.redCar.anchor.setTo(0, 0);
-    game.physics.enable(this.redCar, Phaser.Physics.ARCADE);
-
-    this.cursors = game.input.keyboard.createCursorKeys();
+    result = this.findObjectsByType('item', this.map, 'objectsLayer');
+    result.forEach(function(element){
+      this.createFromTiledObject(element, this.items);
+    }, this);
   }
 
-  update () {
-    this.road.tilePosition.y += 2;
-    if (this.cursors.left.isDown) {
-        this.redCar.body.velocity.x = -200;
-    } else if (this.cursors.right.isDown) {
-        this.redCar.body.velocity.x = 200;
-    } else {
-      this.redCar.body.velocity.x = 0;
+  createCars() {
+    //create cars
+    this.cars = this.game.add.group();
+    this.cars.enableBody = true;
+    result = this.findObjectsByType('car', this.map, 'objectsLayer');
+
+    result.forEach(function(element){
+      this.createFromTiledObject(element, this.cars);
+    }, this);
+  }
+
+  //find objects in a Tiled layer that containt a property called "type" equal to a certain value
+  findObjectsByType(type, map, layer) {
+    var result = new Array();
+    map.objects[layer].forEach(function(element){
+      if(element.properties.type === type) {
+        element.y -= map.tileHeight;
+        result.push(element);
+      }      
+    });
+    return result;
+  }
+
+  //create a sprite from an object
+  createFromTiledObject(element, group) {
+    var sprite = group.create(element.x, element.y, element.properties.sprite);
+
+      Object.keys(element.properties).forEach(function(key){
+        sprite[key] = element.properties[key];
+      });
+  }
+
+  update() {
+    //collision
+    this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
+    this.game.physics.arcade.overlap(this.player, this.cars, this.carCrash, null, this);
+
+    //player movement
+    this.player.body.velocity.y = 0;
+    this.player.body.velocity.x = 0;
+
+    if(this.cursors.up.isDown) {
+      this.player.body.velocity.y -= 150;
     }
+    else if(this.cursors.down.isDown) {
+      this.player.body.velocity.y += 150;
+    }
+    if(this.cursors.left.isDown) {
+      this.player.body.velocity.x -= 150;
+    }
+    else if(this.cursors.right.isDown) {
+      this.player.body.velocity.x += 150;
+    }
+  }
+
+  collect(player, collectable) {
+    collectable.destroy();
+  }
+
+  carCrash(player, car) {
+    console.log('You just had a car crash. Game over!');
   }
 }
