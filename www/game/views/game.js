@@ -20,6 +20,7 @@ export default class extends Phaser.State {
 
     this.player = this.game.add.sprite(226, 1522, 'redCar');
     this.game.physics.arcade.enable(this.player);
+    this.player.anchor.setTo(0.5, 0.5);
 
     let camera = this.game.camera.follow(this.player, Phaser.Camera.FOLLOW_LOCKON, 0.9, 0.9);
     this.game.camera.targetOffset.y = -100;
@@ -79,17 +80,26 @@ export default class extends Phaser.State {
     this.player.body.velocity.y = 0;
     this.player.body.velocity.x = 0;
 
-    if(this.cursors.up.isDown) {
+    if (this.cursors.up.isDown) {
       this.player.body.velocity.y -= 150;
-    }
-    else if(this.cursors.down.isDown) {
+    } else if (this.cursors.down.isDown) {
       this.player.body.velocity.y += 150;
     }
-    if(this.cursors.left.isDown) {
+
+    if (this.cursors.left.isDown) {
       this.player.body.velocity.x -= 150;
-    }
-    else if(this.cursors.right.isDown) {
+
+      if (this.player.angle >= -10) {
+        this.player.angle -= 1;
+      }
+    } else if (this.cursors.right.isDown) {
       this.player.body.velocity.x += 150;
+
+      if (this.player.angle <= 10) {
+        this.player.angle += 1;
+      }
+    } else {
+      this.player.angle = 0;
     }
   }
 
