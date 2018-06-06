@@ -17,7 +17,7 @@ export default class extends Phaser.State {
     this.map = this.game.add.tilemap('level1');
     this.map.addTilesetImage('tiles', 'tilemap_turns');
     this.backgroundlayer = this.map.createLayer('backgroundLayer');
-    
+
     const TileMapLayer = this.layers.add(this.backgroundlayer);
 
     this.backgroundlayer.resizeWorld();
@@ -25,7 +25,9 @@ export default class extends Phaser.State {
     this.createItems();
     this.createCars();    
 
-    this.player = this.game.add.sprite(226, 1522, 'redCar');
+    const playerStart = this.findObjectsByType('playerStart', this.map, 'objectsLayer')[0];
+    this.player = this.game.add.sprite(playerStart.x, playerStart.y, 'redCar');
+
     this.game.physics.arcade.enable(this.player);
     this.player.anchor.setTo(0.5, 0.5);
 
@@ -63,7 +65,7 @@ export default class extends Phaser.State {
   findObjectsByType(type, map, layer) {
     var result = new Array();
     map.objects[layer].forEach(function(element){
-      if(element.properties.type === type) {
+      if(element.type === type) {
         element.y -= map.tileHeight;
         result.push(element);
       }      
