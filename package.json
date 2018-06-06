@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/PotionsLab/deadly-pursuit/Jettio",
   "dependencies": {
+    "fontfaceobserver": "^2.0.13",
     "phaser-camera-offset": "^1.0.1",
     "phaser-ce": "2.10.3",
     "webfontloader": "1.6.27"

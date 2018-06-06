@@ -11,7 +11,7 @@ class App extends Phaser.Game {
     const width = 270;
     const height = 480;
 
-    super(width, height, Phaser.CANVAS, 'game', null)
+    super(width, height, Phaser.CANVAS, 'game', null, false, false)
 
     this.state.add('Boot', BootView, false)
     this.state.add('Splash', SplashView, false)

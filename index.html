@@ -17,8 +17,26 @@
                 src: url('www/fonts/upheaval/upheavtt.ttf') 
                 format('truetype');
             }
+            @font-face {
+                font-family: 'Super Mario World Text Box';
+                font-style: normal;
+                font-weight: 400;
+                src: local('Super Mario World Text Box'), local('SuperMarioWorldTextBox-Regular'), url('./www/fonts/Super_Mario_World_Text_Box.ttf') format('truetype');
+            }
+            @font-face {
+                font-family: 'Diary of an 8-bit mage';
+                font-style: normal;
+                font-weight: 400;
+                src: local('Diary of an 8-bit mage'), url('./www/fonts/Diary_of_an_8-bit_mage.otf') format('truetype');
+            }
             .u {
                 font-family: "Upheavtt"
+            }
+            .i {
+                font-family: "Super Mario World Text Box"
+            }
+            .p {
+                font-family: "Diary of an 8-bit mage"
             }
             canvas {
                 image-rendering: pixelated;

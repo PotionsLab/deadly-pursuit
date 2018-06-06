@@ -7,11 +7,18 @@ export default class extends Phaser.State {
   init () {}
 
   create() {
+    this.game.renderer.renderSession.roundPixels = true;
+    Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
+    this.game.stage.smoothed = false;
+
+    // Layers
+    this.layers = this.add.group();
+
     this.map = this.game.add.tilemap('level1');
-
     this.map.addTilesetImage('tiles', 'tilemap_turns');
-
     this.backgroundlayer = this.map.createLayer('backgroundLayer');
+    
+    const TileMapLayer = this.layers.add(this.backgroundlayer);
 
     this.backgroundlayer.resizeWorld();
 
@@ -26,6 +33,8 @@ export default class extends Phaser.State {
     this.game.camera.targetOffset.y = -100;
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
+
+    this.renderPoint();
   }
 
   createItems() {
@@ -109,5 +118,20 @@ export default class extends Phaser.State {
 
   carCrash(player, car) {
     console.log('You just had a car crash. Game over!');
+  }
+
+  renderPoint() {
+    var text = this.game.add.text(10, 10, '$00000000123');
+
+    text.align = 'left';
+    text.font = 'Diary of an 8-bit mage';
+    text.fontSize = 17;
+    text.fontWeight = "lighter";
+    text.setShadow(1, 2, '#430b29', 0);
+    text.fill = '#fff5d2';
+    text.fixedToCamera = true;
+    text.smoothed = false;
+
+    return text;
   }
 }
