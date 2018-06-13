@@ -102,16 +102,24 @@ export default class extends Phaser.State {
         this.player.body.velocity.x -= 100;
       }
 
-      if (this.player.angle >= -20) {
+      if (this.player.angle >= -20 && !this.cursors.down.isDown) {
         this.player.angle -= 2;
+      }
+
+      if (this.player.angle <= 20 && this.cursors.down.isDown) {
+        this.player.angle += 2;
       }
     } else if (this.cursors.right.isDown) {
       if (this.cursors.up.isDown || this.cursors.down.isDown) {
         this.player.body.velocity.x += 100;
       }
 
-      if (this.player.angle <= 20) {
+      if (this.player.angle <= 20 && !this.cursors.down.isDown) {
         this.player.angle += 2;
+      }
+
+      if (this.player.angle >= -20 && this.cursors.down.isDown) {
+        this.player.angle -= 2;
       }
     } else {
       if (this.player.angle > 0) {
