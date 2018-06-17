@@ -108,13 +108,10 @@ export default class extends Phaser.State {
     this.player.body.velocity.y = 0;
     this.player.body.velocity.x = 0;
 
-    if (isOutOfRoad) {
-      this.game.camera.shake(0.008, 100);
-    }
-
     if (this.cursors.up.isDown) {
       if (isOutOfRoad) {
-        this.player.body.velocity.y -= 100;
+        this.player.body.velocity.y -= 110;
+        this.game.camera.shake(0.004, 100);
       } else {
         this.player.body.velocity.y -= 150;
       }
