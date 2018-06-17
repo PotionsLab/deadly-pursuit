@@ -37,6 +37,21 @@ export default class extends Phaser.State {
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
     this.renderPoint();
+
+    this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
+    const roadBorder = this.findObjectsByType('border', this.map, 'bordersLayer')[0];
+    const polyArray = [];
+
+    roadBorder.polyline.forEach((point) => {
+      polyArray.push(new Phaser.Point(point[0] + roadBorder.x, point[1] + roadBorder.y + 45))
+    });
+
+    this.poly = new Phaser.Polygon(polyArray);
+
+    this.graphics.beginFill(0xFF00ff);
+    this.graphics.drawPolygon(this.poly.points);
+    this.graphics.endFill();
+    this.graphics.alpha= 0.5;
   }
 
   createItems() {
@@ -83,6 +98,8 @@ export default class extends Phaser.State {
   }
 
   update() {
+    const isOutOfRoad = !this.isOnTheRoad()
+
     //collision
     this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
     this.game.physics.arcade.overlap(this.player, this.cars, this.carCrash, null, this);
@@ -91,8 +108,16 @@ export default class extends Phaser.State {
     this.player.body.velocity.y = 0;
     this.player.body.velocity.x = 0;
 
+    if (isOutOfRoad) {
+      this.game.camera.shake(0.008, 100);
+    }
+
     if (this.cursors.up.isDown) {
-      this.player.body.velocity.y -= 150;
+      if (isOutOfRoad) {
+        this.player.body.velocity.y -= 100;
+      } else {
+        this.player.body.velocity.y -= 150;
+      }
     } else if (this.cursors.down.isDown) {
       this.player.body.velocity.y += 150;
     }
@@ -130,6 +155,20 @@ export default class extends Phaser.State {
         this.player.angle = 0;
       }
     }
+  }
+
+  // Check are every car's corner on the road.
+  isOnTheRoad() {
+    const halftWidth = this.player.body.width / 2;
+    const halfHeight = this.player.body.height / 2;
+    const px = this.player.body.x;
+    const py = this.player.body.y;
+
+    // ToDo: also take into account rotation.
+    return this.poly.contains(px, py)
+      && this.poly.contains(px + this.player.body.width, py)
+      && this.poly.contains(px, py + this.player.body.height)
+      && this.poly.contains(px + this.player.body.width, py + this.player.body.height);
   }
 
   collect(player, collectable) {
