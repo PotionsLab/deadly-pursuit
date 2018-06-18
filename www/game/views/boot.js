@@ -44,7 +44,6 @@ export default class extends Phaser.State {
 
     // swap Phaser.Loader for our custom one
     this.game.load = new CustomLoader(this.game);
-    console.log("this.game: ", this);
   }
 
   getResourcePath(name, type) {
