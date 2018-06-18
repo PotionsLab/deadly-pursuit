@@ -1,4 +1,5 @@
 /* globals __DEV__ */
+/* globals __DEBUG__ */
 import Phaser from 'phaser'
 
   var result;
