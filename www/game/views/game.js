@@ -49,10 +49,12 @@ export default class extends Phaser.State {
 
     this.poly = new Phaser.Polygon(polyArray);
 
-    this.graphics.beginFill(0xFF00ff);
-    this.graphics.drawPolygon(this.poly.points);
-    this.graphics.endFill();
-    this.graphics.alpha= 0.5;
+    if (__DEBUG__) {
+      this.graphics.beginFill(0xFF00ff);
+      this.graphics.drawPolygon(this.poly.points);
+      this.graphics.endFill();
+      this.graphics.alpha= 0.5;
+    }
   }
 
   createItems() {
