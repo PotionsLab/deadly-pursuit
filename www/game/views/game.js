@@ -40,18 +40,18 @@ export default class extends Phaser.State {
     this.renderPoint();
 
     this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
-    const roadBorder = this.findObjectsByType('border', this.map, 'bordersLayer')[0];
-    const polyArray = [];
+    const roadPolygon = this.findObjectsByType('border', this.map, 'bordersLayer')[0];
+    const roadPoints = [];
 
-    roadBorder.polyline.forEach((point) => {
-      polyArray.push(new Phaser.Point(point[0] + roadBorder.x, point[1] + roadBorder.y + 45))
+    roadPolygon.polyline.forEach((point) => {
+      roadPoints.push(new Phaser.Point(point[0] + roadPolygon.x, point[1] + roadPolygon.y + 45))
     });
 
-    this.poly = new Phaser.Polygon(polyArray);
+    this.roadBorder = new Phaser.Polygon(roadPoints);
 
     if (__DEBUG__) {
       this.graphics.beginFill(0xFF00ff);
-      this.graphics.drawPolygon(this.poly.points);
+      this.graphics.drawPolygon(this.roadBorder.points);
       this.graphics.endFill();
       this.graphics.alpha= 0.5;
     }
@@ -165,10 +165,10 @@ export default class extends Phaser.State {
     const py = this.player.body.y;
 
     // ToDo: also take into account rotation.
-    return this.poly.contains(px, py)
-      && this.poly.contains(px + this.player.body.width, py)
-      && this.poly.contains(px, py + this.player.body.height)
-      && this.poly.contains(px + this.player.body.width, py + this.player.body.height);
+    return this.roadBorder.contains(px, py)
+      && this.roadBorder.contains(px + this.player.body.width, py)
+      && this.roadBorder.contains(px, py + this.player.body.height)
+      && this.roadBorder.contains(px + this.player.body.width, py + this.player.body.height);
   }
 
   collect(player, collectable) {
