@@ -56,7 +56,8 @@ let webpackConfig = (env) => {
       alias: {
         'phaser': phaser,
         'pixi': pixi,
-        'p2': p2
+        'p2': p2,
+        'www': path.resolve('./www')
       }
     }
   };
