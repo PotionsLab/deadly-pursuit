@@ -1,6 +1,8 @@
 /* globals __DEV__ */
 /* globals __DEBUG__ */
-import Phaser from 'phaser'
+import Phaser from 'phaser';
+
+import {renderPoint} from 'www/game/views/game/pointsRenderer';
 
   var result;
 
@@ -37,7 +39,7 @@ export default class extends Phaser.State {
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
-    this.renderPoint();
+    renderPoint(this.game);
 
     this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
     const roadPolygon = this.findObjectsByType('border', this.map, 'bordersLayer')[0];
@@ -177,20 +179,5 @@ export default class extends Phaser.State {
 
   carCrash(player, car) {
     console.log('You just had a car crash. Game over!');
-  }
-
-  renderPoint() {
-    var text = this.game.add.text(10, 10, '$00000000123');
-
-    text.align = 'left';
-    text.font = 'Diary of an 8-bit mage';
-    text.fontSize = 17;
-    text.fontWeight = "lighter";
-    text.setShadow(1, 2, '#430b29', 0);
-    text.fill = '#fff5d2';
-    text.fixedToCamera = true;
-    text.smoothed = false;
-
-    return text;
   }
 }
