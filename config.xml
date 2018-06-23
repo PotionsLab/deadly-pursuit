@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.archon.jettio" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Jettio</name>
+<widget id="com.archon.deadlypursuit" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Deadly Pursuit</name>
     <description>
-        A Jettio game.
+        A Deadly Pursuit game.
     </description>
     <author email="archon@archons.info" href="http://archons.info">
         Archon @ Potions Lab
