@@ -27,7 +27,7 @@
   "bugs": {
     "url": "https://github.com/PotionsLab/deadly-pursuit/issues"
   },
-  "homepage": "https://github.com/PotionsLab/deadly-pursuit/Jettio",
+  "homepage": "https://github.com/PotionsLab/deadly-pursuit",
   "dependencies": {
     "fontfaceobserver": "^2.0.13",
     "phaser-camera-offset": "^1.0.1",
