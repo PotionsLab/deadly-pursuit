@@ -3,11 +3,14 @@
 import Phaser from 'phaser';
 
 import {renderPoint} from 'www/game/views/game/pointsRenderer';
+import {getValuesFor, plot, updateCars} from 'www/game/views/game/traceLines';
 
   var result;
 
 export default class extends Phaser.State {
-  init () {}
+  init () {
+    this.pi = 0;
+  }
 
   create() {
     this.game.renderer.renderSession.roundPixels = true;
@@ -41,6 +44,7 @@ export default class extends Phaser.State {
 
     renderPoint(this.game);
 
+    // ROAD BORDER
     this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
     const roadPolygon = this.findObjectsByType('border', this.map, 'bordersLayer')[0];
     const roadPoints = [];
@@ -57,6 +61,27 @@ export default class extends Phaser.State {
       this.graphics.endFill();
       this.graphics.alpha= 0.5;
     }
+
+    // ROAD TRACE
+    const roadTraceLine = this.findObjectsByType('trace', this.map, 'tracesLayer');
+
+    this.points = {
+      'x': getValuesFor('x', roadTraceLine[3]),
+      'y': getValuesFor('y', roadTraceLine[3])
+    };
+
+    if (this.points.x.length > 0) {
+      this.blueCar = this.game.add.sprite(this.points.x[0], this.points.y[0], 'blueCar');
+      this.blueCar.anchor.set(0.5);
+      this.game.physics.arcade.enable(this.blueCar);
+    }
+
+    this.bmd = this.add.bitmapData(this.map.width * this.map.tileWidth, this.map.height * this.map.tileHeight);
+    this.bmd.addToWorld();
+    
+    this.pi = 0;
+    
+    plot(this);
   }
 
   createItems() {
@@ -118,15 +143,15 @@ export default class extends Phaser.State {
         this.player.body.velocity.y -= 110;
         this.game.camera.shake(0.004, 100);
       } else {
-        this.player.body.velocity.y -= 150;
+        this.player.body.velocity.y -= 450;
       }
     } else if (this.cursors.down.isDown) {
-      this.player.body.velocity.y += 150;
+      this.player.body.velocity.y += 450;
     }
 
     if (this.cursors.left.isDown) {
       if (this.cursors.up.isDown || this.cursors.down.isDown) {
-        this.player.body.velocity.x -= 100;
+        this.player.body.velocity.x -= 160;
       }
 
       if (this.player.angle >= -20 && !this.cursors.down.isDown) {
@@ -138,7 +163,7 @@ export default class extends Phaser.State {
       }
     } else if (this.cursors.right.isDown) {
       if (this.cursors.up.isDown || this.cursors.down.isDown) {
-        this.player.body.velocity.x += 100;
+        this.player.body.velocity.x += 160;
       }
 
       if (this.player.angle <= 20 && !this.cursors.down.isDown) {
@@ -157,6 +182,8 @@ export default class extends Phaser.State {
         this.player.angle = 0;
       }
     }
+
+    updateCars(this);
   }
 
   // Check are every car's corner on the road.
