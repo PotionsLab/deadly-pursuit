@@ -4,6 +4,7 @@ import Phaser from 'phaser';
 
 import {renderPoint} from 'www/game/views/game/pointsRenderer';
 import {getValuesFor, plot, updateCars} from 'www/game/views/game/traceLines';
+import {carMovement} from 'www/game/views/game/carMovement';
 
   var result;
 
@@ -135,53 +136,7 @@ export default class extends Phaser.State {
     this.game.physics.arcade.overlap(this.player, this.cars, this.carCrash, null, this);
 
     //player movement
-    this.player.body.velocity.y = 0;
-    this.player.body.velocity.x = 0;
-
-    if (this.cursors.up.isDown) {
-      if (isOutOfRoad) {
-        this.player.body.velocity.y -= 110;
-        this.game.camera.shake(0.004, 100);
-      } else {
-        this.player.body.velocity.y -= 450;
-      }
-    } else if (this.cursors.down.isDown) {
-      this.player.body.velocity.y += 450;
-    }
-
-    if (this.cursors.left.isDown) {
-      if (this.cursors.up.isDown || this.cursors.down.isDown) {
-        this.player.body.velocity.x -= 160;
-      }
-
-      if (this.player.angle >= -20 && !this.cursors.down.isDown) {
-        this.player.angle -= 2;
-      }
-
-      if (this.player.angle <= 20 && this.cursors.down.isDown) {
-        this.player.angle += 2;
-      }
-    } else if (this.cursors.right.isDown) {
-      if (this.cursors.up.isDown || this.cursors.down.isDown) {
-        this.player.body.velocity.x += 160;
-      }
-
-      if (this.player.angle <= 20 && !this.cursors.down.isDown) {
-        this.player.angle += 2;
-      }
-
-      if (this.player.angle >= -20 && this.cursors.down.isDown) {
-        this.player.angle -= 2;
-      }
-    } else {
-      if (this.player.angle > 0) {
-        this.player.angle -= 2;
-      } else if (this.player.angle < 0) {
-        this.player.angle += 2;
-      } else {
-        this.player.angle = 0;
-      }
-    }
+    carMovement(this);
 
     updateCars(this);
   }
