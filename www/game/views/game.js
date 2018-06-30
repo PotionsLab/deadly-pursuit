@@ -10,7 +10,9 @@ import {carMovement} from 'www/game/views/game/carMovement';
 
 export default class extends Phaser.State {
   init () {
-    this.pi = 0;
+    this.pi = [];
+    this.points = [];
+    this.path = [];
   }
 
   create() {
@@ -64,25 +66,37 @@ export default class extends Phaser.State {
     }
 
     // ROAD TRACE
-    const roadTraceLine = this.findObjectsByType('trace', this.map, 'tracesLayer');
+    this.roadTraceLines = this.findObjectsByType('trace', this.map, 'tracesLayer');
 
-    this.points = {
-      'x': getValuesFor('x', roadTraceLine[3]),
-      'y': getValuesFor('y', roadTraceLine[3])
-    };
+    console.log("this.roadTraceLines: ", this.roadTraceLines)
+    this.roadTraceLines.forEach((roadTraceLine, index) => {
+      console.log(this.roadTraceLines, roadTraceLine);
+      // if (roadTraceLine.length > 0) {
+        this.points[index] = {
+          'x': getValuesFor('x', this.roadTraceLines[index]),
+          'y': getValuesFor('y', this.roadTraceLines[index])
+        };
+      // }
+    });
 
-    if (this.points.x.length > 0) {
-      this.blueCar = this.game.add.sprite(this.points.x[0], this.points.y[0], 'blueCar');
-      this.blueCar.anchor.set(0.5);
-      this.game.physics.arcade.enable(this.blueCar);
-    }
+    this.roadTraceLines.forEach((roadTraceLine, index) => {
+      console.log(this.points);
+      if (this.points[index] && this.points[index].x.length > 0) {
+        this.cars[index] = this.game.add.sprite(
+          this.points[index].x[0],
+          this.points[index].y[0],
+          'blueCar'
+        );
+        this.cars[index].anchor.set(0.5);
+        this.game.physics.arcade.enable(this.cars[index]);
+        this.pi[index] = 0;
+      }
+    });
 
     this.bmd = this.add.bitmapData(this.map.width * this.map.tileWidth, this.map.height * this.map.tileHeight);
     this.bmd.addToWorld();
     
-    this.pi = 0;
-    
-    plot(this);
+    plot(this, this.roadTraceLines);
   }
 
   createItems() {
@@ -129,8 +143,6 @@ export default class extends Phaser.State {
   }
 
   update() {
-    const isOutOfRoad = !this.isOnTheRoad()
-
     //collision
     this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
     this.game.physics.arcade.overlap(this.player, this.cars, this.carCrash, null, this);
@@ -139,20 +151,6 @@ export default class extends Phaser.State {
     carMovement(this);
 
     updateCars(this);
-  }
-
-  // Check are every car's corner on the road.
-  isOnTheRoad() {
-    const halftWidth = this.player.body.width / 2;
-    const halfHeight = this.player.body.height / 2;
-    const px = this.player.body.x;
-    const py = this.player.body.y;
-
-    // ToDo: also take into account rotation.
-    return this.roadBorder.contains(px, py)
-      && this.roadBorder.contains(px + this.player.body.width, py)
-      && this.roadBorder.contains(px, py + this.player.body.height)
-      && this.roadBorder.contains(px + this.player.body.width, py + this.player.body.height);
   }
 
   collect(player, collectable) {
