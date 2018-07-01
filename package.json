@@ -7,7 +7,7 @@
     "setup": "yarn install && cordova platform add android",
     "emulate": "cordova emulate",
     "dev": "webpack",
-    "debug": "webpack --env.DEBUG='true'",
+    "debug": "webpack --env.DEBUG=true",
     "deploy": "webpack --config webpack.production.config.js",
     "test": "test"
   },
