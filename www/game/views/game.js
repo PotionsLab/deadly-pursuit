@@ -3,16 +3,27 @@
 import Phaser from 'phaser';
 
 import {renderPoint} from 'www/game/views/game/pointsRenderer';
-import {getValuesFor, plot, updateCars} from 'www/game/views/game/traceLines';
+import {
+  readTracePathFromMap,
+  defineTrecePoints,
+  generateCarsOnTracelines,
+  createDebuggerArea,
+  createTrace,
+  updateCars
+} from 'www/game/views/game/traceLines';
 import {carMovement} from 'www/game/views/game/carMovement';
 
   var result;
 
 export default class extends Phaser.State {
   init () {
-    this.pi = [];
-    this.points = [];
-    this.path = [];
+    this.roadPaths = {
+      pi: [],
+      points: [],
+      path: [],
+      roadTraceLines: null,
+      debuggerDisplayArea: null
+    };
   }
 
   create() {
@@ -66,32 +77,13 @@ export default class extends Phaser.State {
     }
 
     // ROAD TRACE
-    this.roadTraceLines = this.findObjectsByType('trace', this.map, 'tracesLayer', true);
-
-    this.roadTraceLines.forEach((roadTraceLine, index) => {
-        this.points[index] = {
-          'x': getValuesFor('x', this.roadTraceLines[index]),
-          'y': getValuesFor('y', this.roadTraceLines[index])
-        };
-    });
-
-    this.roadTraceLines.forEach((roadTraceLine, index) => {
-      if (this.points[index] && this.points[index].x.length > 0) {
-        this.cars[index] = this.game.add.sprite(
-          this.points[index].x[0],
-          this.points[index].y[0],
-          'blueCar'
-        );
-        this.cars[index].anchor.set(0.5);
-        this.game.physics.arcade.enable(this.cars[index]);
-        this.pi[index] = 0;
-      }
-    });
-
-    this.bmd = this.add.bitmapData(this.map.width * this.map.tileWidth, this.map.height * this.map.tileHeight);
-    this.bmd.addToWorld();
-    
-    plot(this, this.roadTraceLines);
+    readTracePathFromMap(this);
+    defineTrecePoints(this.roadPaths);
+    generateCarsOnTracelines(this);
+    if (__DEBUG__) {
+      createDebuggerArea(this);
+    }
+    createTrace(this);
   }
 
   createItems() {
