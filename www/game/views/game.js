@@ -68,19 +68,14 @@ export default class extends Phaser.State {
     // ROAD TRACE
     this.roadTraceLines = this.findObjectsByType('trace', this.map, 'tracesLayer');
 
-    console.log("this.roadTraceLines: ", this.roadTraceLines)
     this.roadTraceLines.forEach((roadTraceLine, index) => {
-      console.log(this.roadTraceLines, roadTraceLine);
-      // if (roadTraceLine.length > 0) {
         this.points[index] = {
           'x': getValuesFor('x', this.roadTraceLines[index]),
           'y': getValuesFor('y', this.roadTraceLines[index])
         };
-      // }
     });
 
     this.roadTraceLines.forEach((roadTraceLine, index) => {
-      console.log(this.points);
       if (this.points[index] && this.points[index].x.length > 0) {
         this.cars[index] = this.game.add.sprite(
           this.points[index].x[0],
