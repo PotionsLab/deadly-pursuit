@@ -66,7 +66,7 @@ export default class extends Phaser.State {
     }
 
     // ROAD TRACE
-    this.roadTraceLines = this.findObjectsByType('trace', this.map, 'tracesLayer');
+    this.roadTraceLines = this.findObjectsByType('trace', this.map, 'tracesLayer', true);
 
     this.roadTraceLines.forEach((roadTraceLine, index) => {
         this.points[index] = {
@@ -117,10 +117,12 @@ export default class extends Phaser.State {
   }
 
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
-  findObjectsByType(type, map, layer) {
+  findObjectsByType(type, map, layer, onlyVisible = false) {
     var result = new Array();
     map.objects[layer].forEach(function(element){
-      if(element.type === type) {
+      if(element.type === type 
+        && (onlyVisible ? element.visible : true)
+      ) {
         element.y -= map.tileHeight;
         result.push(element);
       }      
