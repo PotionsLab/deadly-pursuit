@@ -27,9 +27,13 @@ export const generateCarsOnTracelines = (game) => {
         roadPaths.points[index].y[0],
         'blueCar'
       );
+
       car.anchor.set(0.5);
       game.physics.arcade.enable(car);
-      roadPaths.pi[index] = 0;
+
+      car.properties = {};
+      car.properties.distance = 0;
+      car.properties.speed = index + 1;
     }
   });
 }
@@ -98,18 +102,16 @@ const getValuesFor = (coordinate, polyline) => {
 export const updateCars = (game) => {
   const carRotation = 1.5;
 
-  console.log(game.cars.children.length);
-
   game.cars.children.forEach((car, index) => {
-   car.body.x = game.roadPaths.path[index][game.roadPaths.pi[index]].x - (car.body.width / 2);
-    car.body.y = game.roadPaths.path[index][game.roadPaths.pi[index]].y - (car.body.height / 2);
+    car.body.x = game.roadPaths.path[index][car.properties.distance].x - (car.body.width / 2);
+    car.body.y = game.roadPaths.path[index][car.properties.distance].y - (car.body.height / 2);
 
-    game.roadPaths.pi[index] += 4;
+    car.properties.distance += car.properties.speed;
 
-    if (game.roadPaths.pi[index] >= game.roadPaths.path[index].length) {
-      game.roadPaths.pi[index] = 0;
+    if (car.properties.distance >= game.roadPaths.path[index].length) {
+      car.properties.distance = 0;
     }
 
-    car.rotation = game.roadPaths.path[index][game.roadPaths.pi[index]].angle + carRotation;
+    car.rotation = game.roadPaths.path[index][car.properties.distance].angle + carRotation;
   });
 }
