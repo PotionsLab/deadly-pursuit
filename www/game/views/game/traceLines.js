@@ -22,13 +22,13 @@ export const generateCarsOnTracelines = (game) => {
 
   roadPaths.roadTraceLines.forEach((roadTraceLine, index) => {
     if (roadPaths.points[index] && roadPaths.points[index].x.length > 0) {
-      game.cars[index] = game.add.sprite(
+      game.cars['car-' + index] = game.add.sprite(
         roadPaths.points[index].x[0],
         roadPaths.points[index].y[0],
         'blueCar'
       );
-      game.cars[index].anchor.set(0.5);
-      game.physics.arcade.enable(game.cars[index]);
+      game.cars['car-' + index].anchor.set(0.5);
+      game.physics.arcade.enable(game.cars['car-' + index]);
       roadPaths.pi[index] = 0;
     }
   });
@@ -99,8 +99,8 @@ export const updateCars = (game) => {
   const carRotation = 1.5;
 
   game.roadPaths.roadTraceLines.forEach((roadTraceLine, index) => {
-    game.cars[index].body.x = game.roadPaths.path[index][game.roadPaths.pi[index]].x - (game.cars[index].body.width / 2);
-    game.cars[index].body.y = game.roadPaths.path[index][game.roadPaths.pi[index]].y - (game.cars[index].body.height / 2);
+    game.cars['car-' + index].body.x = game.roadPaths.path[index][game.roadPaths.pi[index]].x - (game.cars['car-' + index].body.width / 2);
+    game.cars['car-' + index].body.y = game.roadPaths.path[index][game.roadPaths.pi[index]].y - (game.cars['car-' + index].body.height / 2);
 
     game.roadPaths.pi[index] += 4;
 
@@ -108,6 +108,6 @@ export const updateCars = (game) => {
       game.roadPaths.pi[index] = 0;
     }
 
-    game.cars[index].rotation = game.roadPaths.path[index][game.roadPaths.pi[index]].angle + carRotation;
+    game.cars['car-' + index].rotation = game.roadPaths.path[index][game.roadPaths.pi[index]].angle + carRotation;
   });
 }
