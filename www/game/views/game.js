@@ -42,8 +42,7 @@ export default class extends Phaser.State {
 
     this.backgroundlayer.resizeWorld();
 
-    this.createItems();
-    this.createCars();    
+    this.createItems();;    
 
     const playerStart = this.findObjectsByType('playerStart', this.map, 'objectsLayer')[0];
     this.player = this.game.add.sprite(playerStart.x, playerStart.y, 'redCar');
@@ -76,6 +75,9 @@ export default class extends Phaser.State {
       this.graphics.alpha= 0.5;
     }
 
+    this.cars = this.game.add.group();
+    this.cars.enableBody = true;
+
     // ROAD TRACE
     readTracePathFromMap(this);
     defineTrecePoints(this.roadPaths);
@@ -94,17 +96,6 @@ export default class extends Phaser.State {
     result = this.findObjectsByType('item', this.map, 'objectsLayer');
     result.forEach(function(element){
       this.createFromTiledObject(element, this.items);
-    }, this);
-  }
-
-  createCars() {
-    //create cars
-    this.cars = this.game.add.group();
-    this.cars.enableBody = true;
-    result = this.findObjectsByType('car', this.map, 'objectsLayer');
-
-    result.forEach(function(element){
-      this.createFromTiledObject(element, this.cars);
     }, this);
   }
 
