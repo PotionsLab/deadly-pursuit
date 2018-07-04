@@ -70,6 +70,10 @@ export default class extends Phaser.State {
     this.game.load.image('road', this.getResourcePath('road_daylight_bg.png', this.SPRITE_URL));
     this.game.load.image('redCar', this.getResourcePath('car_top_red.png', this.SPRITE_URL));
     this.game.load.image('blueCar', this.getResourcePath('car_top_blue.png', this.SPRITE_URL));
+    this.game.load.image('greenCar', this.getResourcePath('car_top_green.png', this.SPRITE_URL));
+    this.game.load.image('greenPlainCar', this.getResourcePath('car_top_green_plain.png', this.SPRITE_URL));
+    this.game.load.image('blackSkullCar', this.getResourcePath('car_top_black_skull.png', this.SPRITE_URL));
+    
     this.game.load.image('dashboardBg', this.getResourcePath('dashboard_bg.png', this.SPRITE_URL));
     this.game.load.image('fuelBar', this.getResourcePath('fuel_bar.png', this.SPRITE_URL));
 
