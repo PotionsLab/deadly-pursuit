@@ -34,6 +34,7 @@ export const generateCarsOnTracelines = (game) => {
       car.properties = {};
       car.properties.distance = 0;
       car.properties.speed = index + 1;
+      car.properties.pathIndex = index;
     }
   });
 }
@@ -103,15 +104,17 @@ export const updateCars = (game) => {
   const carRotation = 1.5;
 
   game.cars.children.forEach((car, index) => {
-    car.body.x = game.roadPaths.path[index][car.properties.distance].x - (car.body.width / 2);
-    car.body.y = game.roadPaths.path[index][car.properties.distance].y - (car.body.height / 2);
+    const {distance, pathIndex, speed} = car.properties;
 
-    car.properties.distance += car.properties.speed;
+    if (distance < game.roadPaths.path[pathIndex].length) {
+      car.body.x = game.roadPaths.path[pathIndex][distance].x - (car.body.width / 2);
+      car.body.y = game.roadPaths.path[pathIndex][distance].y - (car.body.height / 2);
 
-    if (car.properties.distance >= game.roadPaths.path[index].length) {
+      car.properties.distance += speed;
+
+      car.rotation = game.roadPaths.path[pathIndex][distance].angle + carRotation;
+    } else if (distance >= game.roadPaths.path[pathIndex].length) {
       car.properties.distance = 0;
     }
-
-    car.rotation = game.roadPaths.path[index][car.properties.distance].angle + carRotation;
   });
 }
