@@ -2,6 +2,8 @@ import 'pixi'
 import 'p2'
 import Phaser from 'phaser'
 
+import {PhaserCamerOffset} from 'www/libs/phaser-camera-offset';
+
 import BootView from './views/boot'
 import SplashView from './views/splash'
 import GameView from './views/game'
@@ -18,6 +20,8 @@ class App extends Phaser.Game {
     this.state.add('Game', GameView, false)
 
     this.state.start('Boot')
+
+    PhaserCamerOffset();
   }
 }
 

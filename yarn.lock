@@ -835,7 +835,7 @@ babel-plugin-transform-regenerator@6.26.0, babel-plugin-transform-regenerator@^6
   dependencies:
     regenerator-transform "^0.10.0"
 
-babel-plugin-transform-runtime@6.26.0:
+babel-plugin-transform-runtime@6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
   dependencies:
@@ -4140,19 +4140,9 @@ performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
-phaser-camera-offset@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/phaser-camera-offset/-/phaser-camera-offset-1.0.1.tgz#f9e162bbd796c07ec2cc39a34e6e3b999f2cd8d5"
-  dependencies:
-    phaser "^2.6.2"
-
 phaser-ce@2.10.3:
   version "2.10.3"
   resolved "https://registry.yarnpkg.com/phaser-ce/-/phaser-ce-2.10.3.tgz#35cc4cf7cbe5bec13981b0f1ea759a54ba005631"
-
-phaser@^2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/phaser/-/phaser-2.6.2.tgz#eb39121725a2149c49f46b5d144318c22bc09249"
 
 pify@^2.0.0:
   version "2.3.0"

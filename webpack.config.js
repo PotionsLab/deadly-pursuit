@@ -15,7 +15,7 @@ let webpackConfig = (env) => {
         'babel-polyfill',
         path.resolve(__dirname, 'www/game/app.js')
       ],
-      vendor: ['pixi', 'p2', 'phaser', 'webfontloader', 'phaser-camera-offset', 'fontfaceobserver']
+      vendor: ['pixi', 'p2', 'phaser', 'webfontloader', 'fontfaceobserver']
     },
     devtool: 'cheap-source-map',
     output: {
