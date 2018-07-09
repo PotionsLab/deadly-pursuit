@@ -2,7 +2,7 @@
 /* globals __DEBUG__ */
 import Phaser from 'phaser';
 
-import {renderPoint} from 'www/game/views/game/pointsRenderer';
+import {renderPoint, updatePoints} from 'www/game/views/game/pointsRenderer';
 import {
   readTracePathFromMap,
   defineTrecePoints,
@@ -12,6 +12,8 @@ import {
   updateCars
 } from 'www/game/views/game/traceLines';
 import {carMovement} from 'www/game/views/game/carMovement';
+import {Probability} from 'www/libs/probability';
+import {carGenerate} from 'www/game/views/game/carGenerator';
 
   var result;
 
@@ -27,6 +29,7 @@ export default class extends Phaser.State {
   }
 
   create() {
+    game.time.advancedTiming = true;
     this.game.renderer.renderSession.roundPixels = true;
     Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
     this.game.stage.smoothed = false;
@@ -55,7 +58,7 @@ export default class extends Phaser.State {
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
-    renderPoint(this.game);
+    renderPoint(this);
 
     // ROAD BORDER
     this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
@@ -86,6 +89,51 @@ export default class extends Phaser.State {
       createDebuggerArea(this);
     }
     createTrace(this);
+
+    game.time.events.loop(Phaser.Timer.SECOND * 5, () => {
+      carGenerate(this, {
+        traces: [
+          {
+            name: 0,
+            probability: 1
+          },
+          {
+            name: 1,
+            probability: 1
+          },
+          {
+            name: 2,
+            probability: 1
+          },
+          {
+            name: 3,
+            probability: 1
+          }
+        ],
+        cars: [
+          {
+            name: 'blueCar',
+            probability: 0.8,
+            speed: [2, 5]
+          },
+          {
+            name: 'greenCar',
+            probability: 0.6,
+            speed: [2, 5]
+          },
+          {
+            name: 'greenPlainCar',
+            probability: 0.5,
+            speed: [1, 4]
+          },
+          {
+            name: 'blackSkullCar',
+            probability: 0.1,
+            speed: [5, 6]
+          }
+        ]
+      });
+    }, this);
   }
 
   createItems() {
@@ -131,6 +179,13 @@ export default class extends Phaser.State {
     carMovement(this);
 
     updateCars(this);
+  }
+
+  render() {
+    // FPS
+    if (__DEBUG__) {
+      this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+    }
   }
 
   collect(player, collectable) {
