@@ -1,5 +1,5 @@
-export const renderPoint = (game) => {
-    var text = game.add.text(10, 10, '$00000000123');
+export const renderPoint = (context) => {
+    var text = context.game.add.text(10, 10, 'dist: 0');
 
     text.align = 'left';
     text.font = 'Diary of an 8-bit mage';
@@ -10,6 +10,10 @@ export const renderPoint = (game) => {
     text.fixedToCamera = true;
     text.smoothed = false;
 
-    return text;
+    context.ui.points = text;
   };
 
+export const updatePoints = (context) => {
+  // console.log((context.game.world.height - context.player.position.y).toFixed(0));
+  context.ui.points.setText('dist: ' + (context.game.world.height - context.player.position.y).toFixed(0));
+}

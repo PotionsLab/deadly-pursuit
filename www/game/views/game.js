@@ -26,6 +26,7 @@ export default class extends Phaser.State {
       roadTraceLines: null,
       debuggerDisplayArea: null
     };
+    this.ui = {};
   }
 
   create() {
@@ -178,6 +179,7 @@ export default class extends Phaser.State {
     //player movement
     carMovement(this);
 
+    updatePoints(this);
     updateCars(this);
   }
 
