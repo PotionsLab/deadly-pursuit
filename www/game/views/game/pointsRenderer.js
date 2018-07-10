@@ -14,6 +14,5 @@ export const renderPoint = (context) => {
   };
 
 export const updatePoints = (context) => {
-  // console.log((context.game.world.height - context.player.position.y).toFixed(0));
   context.ui.points.setText('dist: ' + (context.game.world.height - context.player.position.y).toFixed(0));
 }
