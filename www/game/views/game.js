@@ -171,10 +171,13 @@ export default class extends Phaser.State {
       });
   }
 
+  carsCollision(carA, carB) {}
+
   update() {
     //collision
     this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
     this.game.physics.arcade.overlap(this.player, this.cars, this.carCrash, null, this);
+    this.game.physics.arcade.overlap(this.cars, this.cars, this.carsCollision, null, this);
 
     //player movement
     carMovement(this);
