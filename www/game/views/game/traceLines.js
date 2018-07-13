@@ -35,6 +35,7 @@ export const generateCarsOnTracelines = (game) => {
       car.properties.distance = 0;
       car.properties.speed = index + 1;
       car.properties.pathIndex = index;
+      car.properties.name = "car-"+index;
     }
   });
 }
@@ -100,6 +101,22 @@ const getValuesFor = (coordinate, polyline) => {
   });
 }
 
+const isCollideWithOtherCar = (game, car) => {
+  let returnValue = false;
+
+  game.cars.children.some((element) => {
+    const coll = Phaser.Rectangle.intersects(element.getBounds(), car.getBounds());
+
+    if (coll && element.properties.name !== car.properties.name) {
+      returnValue = coll;
+    }
+
+    return coll;
+  });
+
+  return returnValue;
+}
+
 export const updateCars = (game) => {
   const carRotation = 1.5;
 
@@ -107,12 +124,21 @@ export const updateCars = (game) => {
     const {distance, pathIndex, speed} = car.properties;
 
     if (distance < game.roadPaths.path[pathIndex].length) {
-      car.body.x = game.roadPaths.path[pathIndex][distance].x - (car.body.width / 2);
-      car.body.y = game.roadPaths.path[pathIndex][distance].y - (car.body.height / 2);
+      const newX = game.roadPaths.path[pathIndex][distance].x - (car.body.width / 2);
+      const newY = game.roadPaths.path[pathIndex][distance].y - (car.body.height / 2);
 
-      car.properties.distance += speed;
+      if (!isCollideWithOtherCar(game, car)) {
+        car.body.x = newX;
+        car.body.y = newY;
 
-      car.rotation = game.roadPaths.path[pathIndex][distance].angle + carRotation;
+        car.properties.distance += speed;
+        car.rotation = game.roadPaths.path[pathIndex][distance].angle + carRotation;
+      } else {
+        if (car.properties.distance > 0) {
+          car.properties.distance -= 1;
+        }
+      }
+
     } else if (distance >= game.roadPaths.path[pathIndex].length) {
       car.properties.distance = 0;
     }
