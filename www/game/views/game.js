@@ -113,22 +113,22 @@ export default class extends Phaser.State {
         ],
         cars: [
           {
-            name: 'blueCar',
+            type: 'blueCar',
             probability: 0.8,
             speed: [2, 5]
           },
           {
-            name: 'greenCar',
+            type: 'greenCar',
             probability: 0.6,
             speed: [2, 5]
           },
           {
-            name: 'greenPlainCar',
+            type: 'greenPlainCar',
             probability: 0.5,
             speed: [1, 4]
           },
           {
-            name: 'blackSkullCar',
+            type: 'blackSkullCar',
             probability: 0.1,
             speed: [5, 6]
           }

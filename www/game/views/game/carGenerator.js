@@ -53,7 +53,7 @@ export const carGenerate = (context, config) => {
 	const car = context.cars.create(
 		context.roadPaths.points[traceId].x[0],
 		context.roadPaths.points[traceId].y[0],
-		getCar(config, carIndex).name
+		getCar(config, carIndex).type
 	);
 
 	car.anchor.set(0.5);
