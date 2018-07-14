@@ -31,10 +31,10 @@ export const generateCarsOnTracelines = (game) => {
       car.anchor.set(0.5);
       game.physics.arcade.enable(car);
 
+      car.name = "car-"+index;
       car.data.distance = 0;
       car.data.speed = index + 1;
       car.data.pathIndex = index;
-      car.data.name = "car-"+index;
     }
   });
 }
@@ -106,7 +106,7 @@ const isCollideWithOtherCar = (game, car) => {
   game.cars.children.some((element) => {
     const coll = Phaser.Rectangle.intersects(element.getBounds(), car.getBounds());
 
-    if (coll && element.data.name !== car.data.name) {
+    if (coll && element.name !== car.name) {
       returnValue = coll;
     }
 
