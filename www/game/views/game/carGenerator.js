@@ -1,5 +1,6 @@
 import {Probability} from 'www/libs/probability';
 import {valuesSetIntoPercetages} from 'www/utils/probability';
+import short from 'short-uuid';
 
 const getTrace = (config) => {
   const probablityArray = valuesSetIntoPercetages(config.traces.map((element) => element.probability));
@@ -47,6 +48,20 @@ const getSpeed = (context, config, carIndex) => {
   return context.rnd.integerInRange(speedRange[0], speedRange[1]);
 };
 
+const getCarName = (id) => {
+  return `car-${id}`
+};
+
+const generateCarName = (context) => {
+  let carName = getCarName(short.uuid());
+
+  while (context.cars.getByName(carName) !== null) {
+    carName = getCarName(short.uuid());
+  }
+
+  return carName;
+};
+
 export const carGenerate = (context, config) => {
   const traceId = getTrace(config);
   const carIndex = getCarIndex(config);
@@ -59,6 +74,7 @@ export const carGenerate = (context, config) => {
 	car.anchor.set(0.5);
 	context.physics.arcade.enable(car);
 
+  car.name = generateCarName(context);
 	car.data.distance = 0;
 	car.data.speed = getSpeed(context, config, carIndex);
 	car.data.pathIndex = traceId;
