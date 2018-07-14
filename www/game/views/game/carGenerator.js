@@ -59,8 +59,7 @@ export const carGenerate = (context, config) => {
 	car.anchor.set(0.5);
 	context.physics.arcade.enable(car);
 
-	car.properties = {};
-	car.properties.distance = 0;
-	car.properties.speed = getSpeed(context, config, carIndex);
-	car.properties.pathIndex = traceId;
+	car.data.distance = 0;
+	car.data.speed = getSpeed(context, config, carIndex);
+	car.data.pathIndex = traceId;
 }
