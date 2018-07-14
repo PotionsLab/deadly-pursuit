@@ -62,7 +62,7 @@ export default class extends Phaser.State {
     renderPoint(this);
 
     // ROAD BORDER
-    this.graphics = this.add.graphics({ lineStyle: { width: 2, color: 0xaa6622 } });
+    this.graphics = this.add.graphics(0, 0);
     const roadPolygon = this.findObjectsByType('border', this.map, 'bordersLayer')[0];
     const roadPoints = [];
 
