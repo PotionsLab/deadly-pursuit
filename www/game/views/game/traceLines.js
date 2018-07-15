@@ -100,6 +100,9 @@ const getValuesFor = (coordinate, polyline) => {
   });
 }
 
+// Returns:
+//  - false - when no collision
+//  - car object - when collide with
 const isCollideWithOtherCar = (game, car) => {
   let returnValue = false;
 
@@ -107,7 +110,7 @@ const isCollideWithOtherCar = (game, car) => {
     const coll = Phaser.Rectangle.intersects(element.getBounds(), car.getBounds());
 
     if (coll && element.name !== car.name) {
-      returnValue = coll;
+      returnValue = element;
     }
 
     return coll;
@@ -125,16 +128,26 @@ export const updateCars = (game) => {
     if (distance < game.roadPaths.path[pathIndex].length) {
       const newX = game.roadPaths.path[pathIndex][distance].x - (car.body.width / 2);
       const newY = game.roadPaths.path[pathIndex][distance].y - (car.body.height / 2);
+      const collideWithCar = isCollideWithOtherCar(game, car);
 
-      if (!isCollideWithOtherCar(game, car)) {
+      if (!collideWithCar) {
         car.body.x = newX;
         car.body.y = newY;
 
-        car.data.distance += speed;
+        car.data.distance += parseInt(speed);
         car.rotation = game.roadPaths.path[pathIndex][distance].angle + carRotation;
       } else {
         if (car.data.distance > 0) {
+          const firstCarsSpeed = car.data.speed;
+
+          // replace car speed
+          car.data.speed = collideWithCar.data.speed;
+          collideWithCar.data.speed = firstCarsSpeed;     
+
+          // move car one pixel behind // ToDo: move only for car which is on 
           car.data.distance -= 1;
+          car.body.x = game.roadPaths.path[pathIndex][car.data.distance].x - (car.body.width / 2);
+          car.body.y = game.roadPaths.path[pathIndex][car.data.distance].y - (car.body.height / 2);
         }
       }
 
