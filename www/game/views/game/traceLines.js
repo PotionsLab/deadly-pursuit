@@ -137,17 +137,22 @@ export const updateCars = (game) => {
         car.data.distance += parseInt(speed);
         car.rotation = game.roadPaths.path[pathIndex][distance].angle + carRotation;
       } else {
-        if (car.data.distance > 0) {
+        if (car.data.distance > 0 && collideWithCar.data.distance) {
           const firstCarsSpeed = car.data.speed;
 
           // replace car speed
           car.data.speed = collideWithCar.data.speed;
           collideWithCar.data.speed = firstCarsSpeed;     
 
-          // move car one pixel behind // ToDo: move only for car which is on 
-          car.data.distance -= 1;
-          car.body.x = game.roadPaths.path[pathIndex][car.data.distance].x - (car.body.width / 2);
-          car.body.y = game.roadPaths.path[pathIndex][car.data.distance].y - (car.body.height / 2);
+          if (car.data.distance < collideWithCar.data.distance) {
+            car.data.distance -= 1;
+            car.body.x = game.roadPaths.path[pathIndex][car.data.distance].x - (car.body.width / 2);
+            car.body.y = game.roadPaths.path[pathIndex][car.data.distance].y - (car.body.height / 2);
+          }   else {
+            collideWithCar.data.distance -= 1;
+            collideWithCar.body.x = game.roadPaths.path[pathIndex][collideWithCar.data.distance].x - (collideWithCar.body.width / 2);
+            collideWithCar.body.y = game.roadPaths.path[pathIndex][collideWithCar.data.distance].y - (collideWithCar.body.height / 2);
+          }
         }
       }
 
