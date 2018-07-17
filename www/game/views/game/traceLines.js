@@ -119,6 +119,14 @@ const isCollideWithOtherCar = (game, car) => {
   return returnValue;
 }
 
+const getNewCarPositionX = (game, car, distance) => {
+  return game.roadPaths.path[car.data.pathIndex][distance].x - (car.body.width / 2);
+};
+
+const getNewCarPositionY = (game, car, distance) => {
+  return game.roadPaths.path[car.data.pathIndex][distance].y - (car.body.height / 2);
+};
+
 export const updateCars = (game) => {
   const carRotation = 1.5;
 
@@ -126,8 +134,8 @@ export const updateCars = (game) => {
     const {distance, pathIndex, speed} = car.data;
 
     if (distance < game.roadPaths.path[pathIndex].length) {
-      const newX = game.roadPaths.path[pathIndex][distance].x - (car.body.width / 2);
-      const newY = game.roadPaths.path[pathIndex][distance].y - (car.body.height / 2);
+      const newX = getNewCarPositionX(game, car, distance);
+      const newY = getNewCarPositionY(game, car, distance);
       const collideWithCar = isCollideWithOtherCar(game, car);
 
       if (!collideWithCar) {
@@ -146,12 +154,12 @@ export const updateCars = (game) => {
 
           if (car.data.distance < collideWithCar.data.distance) {
             car.data.distance -= 1;
-            car.body.x = game.roadPaths.path[pathIndex][car.data.distance].x - (car.body.width / 2);
-            car.body.y = game.roadPaths.path[pathIndex][car.data.distance].y - (car.body.height / 2);
+            car.body.x = getNewCarPositionX(game, car, car.data.distance);
+            car.body.y = getNewCarPositionY(game, car, car.data.distance);
           }   else {
             collideWithCar.data.distance -= 1;
-            collideWithCar.body.x = game.roadPaths.path[pathIndex][collideWithCar.data.distance].x - (collideWithCar.body.width / 2);
-            collideWithCar.body.y = game.roadPaths.path[pathIndex][collideWithCar.data.distance].y - (collideWithCar.body.height / 2);
+            collideWithCar.body.x = getNewCarPositionX(game, collideWithCar, collideWithCar.data.distance);
+            collideWithCar.body.y = getNewCarPositionY(game, collideWithCar, collideWithCar.data.distance);
           }
         }
       }
