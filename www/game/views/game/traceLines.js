@@ -156,7 +156,7 @@ export const updateCars = (game) => {
             car.data.distance -= 1;
             car.body.x = getNewCarPositionX(game, car, car.data.distance);
             car.body.y = getNewCarPositionY(game, car, car.data.distance);
-          }   else {
+          } else {
             collideWithCar.data.distance -= 1;
             collideWithCar.body.x = getNewCarPositionX(game, collideWithCar, collideWithCar.data.distance);
             collideWithCar.body.y = getNewCarPositionY(game, collideWithCar, collideWithCar.data.distance);
